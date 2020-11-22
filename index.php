@@ -8,7 +8,7 @@
     if (isset($_REQUEST['action'])) {
         $action = $_REQUEST['action'];
     } else {
-        $action = "showCalendar";
+        $action = "mostrarCalendario";
     }
 
     $controller->$action();
