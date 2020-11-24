@@ -14,7 +14,7 @@
             $result = null;
             $usuario = $this->db->consulta("SELECT * FROM users WHERE mail='$user' AND passwd='$password'");
             if ($usuario) {
-                $result = $usuario;
+                $result = $usuario[0];
             }
             return $result;
         }

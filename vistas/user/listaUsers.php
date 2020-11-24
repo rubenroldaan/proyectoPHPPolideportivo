@@ -1,5 +1,4 @@
 <?php
-
     echo '<h1>Hola '.$_SESSION["nombre_user"].'</h1>';
     echo '<p><a href="index.php?action=cerrarSesion">Cerrar sesión</a></p>';
     echo '<br><br><br>';
