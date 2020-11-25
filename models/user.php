@@ -87,4 +87,10 @@
             }
             return $imagenBuena;
         }
+
+        public function delete($id_user) {
+            $this->db->modificacion("DELETE FROM users WHERE id_user='$id_user'");
+
+            return $this->db->filasAfectadas();
+        }
     }

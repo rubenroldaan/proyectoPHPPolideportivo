@@ -3,6 +3,12 @@
     echo '<img src="imgs/prof_pics/'.$_SESSION["pic_user"].'" width="100px" height="100px">';
     echo '<p><a href="index.php?action=cerrarSesion">Cerrar sesión</a></p>';
     echo '<br><br><br>';
+    if (isset($data['msjInfo'])) {
+        echo '<p>$data'.$data["msjInfo"].'"</p>';
+    }
+    if (isset($data['msjError'])) {
+        echo '<p>$data'.$data["msjError"].'"</p>';
+    }
     echo '<p><a href="index.php?action=nuevoUsuario">Crear usuario</a></p>';
     echo '<table class="tablaUsuarios" cellspacing="0" border="1px solid black">';
         echo '<thead class="theadUsuarios">';
@@ -20,7 +26,7 @@
             echo '<td>'.$user->mail.'</td>';
             echo '<td><a href="index.php?action=formModificarUsuario&id_user='.$user->id_user.'">
                     <img src="imgs/button-edit.png" id="buttonEdit" alt="Modificar usuario" title="Modificar usuario"></a></td>';
-            echo '<td><a href="index.php?action=borrarUsuario&id_user='.$user->id_user.'">
+            echo '<td><a href="index.php?action=confirmacionBorrarUsuario&id_user='.$user->id_user.'">
                     <img src="imgs/borrar.png" id="botonBorrar" alt="Eliminar usuario" title="Eliminar usuario"></a></td>';
             echo '</tr>';
         }

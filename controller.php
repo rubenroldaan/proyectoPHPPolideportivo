@@ -95,9 +95,35 @@
         }
 
         /*A ESTA FUNCIÓN HAY QUE AÑADIRLE MÁS ADELANTE LO DE LAS RESERVAS*/
+        public function confirmacionBorrarUsuario() {
+            if ($this->secure->haySesionIniciada()) {
+                // HAY QUE PONER SI ES ADMINISTRADOR
+                $id_user = $_REQUEST['id_user'];
+                echo '<script>
+                    var opcion = confirm("¿Estás seguro de eliminar el usuario?");
+                    if (opcion) {
+                        location.href = "index.php?action=borrarUsuario&id_user='.$id_user.'";
+                    } else {
+                        location.href = "index.php?action=mostrarListaUsuarios";
+                    }
+                </script>';
+            }
+        }
+
+        /*A ESTA FUNCIÓN HAY QUE AÑADIRLE MÁS ADELANTE LO DE LAS RESERVAS*/
         public function borrarUsuario() {
             if ($this->secure->haySesionIniciada()) {
                 //HAY QUE PONER SI ES ADMINISTRADOR
+                $id_user = $_REQUEST['id_user'];
+                $result = $this->user->delete($id_user);
+
+                if ($result == 1) {
+                    $data['msjInfo'] = 'Usuario borrado con éxito';
+                } else {
+                    $data['msjError'] = 'No se ha podido eliminar el usuario. Por favor inténtelo de nuevo más tarde';
+                }
+
+                $this->mostrarListaUsuarios();
             }
         }
     }
