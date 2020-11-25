@@ -19,7 +19,14 @@
             return $result;
         }
 
-        // SE DEVUELVEN COMO OBJETOS? PREGUNTAR URGENTE
+        public function get($user) {
+            $result = null;
+            if ($usuario = $this->db->consulta("SELECT * FROM users WHERE id_user = '$user'")) {
+                $result = $usuario[0];
+            }
+            return $result;
+        }
+
         public function getAll() {
             $result = $this->db->consulta("SELECT * FROM users");
             return $result;
@@ -32,5 +39,52 @@
                 $result = $usuario;
             }
             return $result;
+        }
+
+        public function update() {
+            $id_user = $_REQUEST['id_user'];
+            $nombre = $_REQUEST['nombre'];
+            $apellido1 = $_REQUEST['apellido1'];
+            $apellido2 = $_REQUEST['apellido2'];
+            $dni = $_REQUEST['dni'];
+            $passwd = $_REQUEST['passwd'];
+            $mail = $_REQUEST['mail'];
+            $rol = $_REQUEST['rol'];
+            $imagen = $_FILES['imagen']['name'];
+
+            $result = $this->db->modificacion("UPDATE users SET
+                                                                nombre='$nombre',
+                                                                apellido1='$apellido1',
+                                                                apellido2='$apellido2',
+                                                                passwd='$passwd',
+                                                                mail='$mail',
+                                                                dni='$dni',
+                                                                rol='$rol',
+                                                                imagen='$dni.png'
+                                                WHERE id_user='$id_user'");
+            return $result;
+        }
+
+        public function procesarImagen() {
+            $imagenBuena = true;
+            $imagen = $_FILES['imagen']['name'];
+            $id_user = $_REQUEST['id_user'];
+            $dni = $_REQUEST['dni'];
+            if (isset($imagen) && $imagen != "") {
+                $tipo = $_FILES['imagen']['type'];
+                $tamanyo = $_FILES['imagen']['size'];
+                $temp = $_FILES['imagen']['tmp_name'];
+                if (!((strpos($tipo, "gif") || strpos($tipo,"jpeg") || (strpos($tipo,"jpg") || strpos($tipo,"png")) && ($tamanyo < 2000000)))) {
+                    $imagenBuena = false;
+                } else {
+                    if (move_uploaded_file($temp, 'imgs/prof_pics/'.$dni.'.png')) {
+                        $this->db->modificacion("UPDATE users SET
+                                                                imagen='$imagen'
+                                                    WHERE id_user = '$id_user'");
+                        chmod('imgs/prof_pics/'.$dni.'.png', 0777);
+                    }
+                }
+            }
+            return $imagenBuena;
         }
     }

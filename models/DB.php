@@ -20,4 +20,13 @@
             }
             return $arrayResult;
         }
+
+        public function modificacion($sql) {
+            $this->db->query($sql);
+            return $this->db->affected_rows;
+        }
+
+        public function filasAfectadas() {
+            return $this->db->affected_rows;
+        }
     }

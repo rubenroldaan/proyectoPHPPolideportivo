@@ -68,4 +68,36 @@
                 $this->vista->mostrar("user/listaUsers",$data);
             }
         }
+
+        public function formModificarUsuario() {
+            if ($this->secure->haySesionIniciada()) {
+                // HAY QUE PONER SI ES ADMINISTRADOR
+                $user = $_REQUEST['id_user'];
+                if ($data['user'] = $this->user->get($user)) {
+                    $this->vista->mostrar("user/formularioModificarUsuario",$data);
+                }
+            }    
+        }
+
+        public function modificarUsuario() {
+            if ($this->secure->haySesionIniciada()) {
+                // HAY QUE PONER SI ES ADMINISTRADOR
+                $imgResult = $this->user->procesarImagen();
+                $result = $this->user->update();
+                if ($result == 1) {
+                    $data['msjInfo'] = 'Usuario modificado con éxito';
+                } else {
+                    $data['msjError'] = 'No se ha podido modificar el usuario. Por favor, inténtelo de nuevo.';
+                }
+
+                $this->mostrarListaUsuarios();
+            }
+        }
+
+        /*A ESTA FUNCIÓN HAY QUE AÑADIRLE MÁS ADELANTE LO DE LAS RESERVAS*/
+        public function borrarUsuario() {
+            if ($this->secure->haySesionIniciada()) {
+                //HAY QUE PONER SI ES ADMINISTRADOR
+            }
+        }
     }
