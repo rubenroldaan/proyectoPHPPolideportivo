@@ -14,6 +14,3 @@
     <title>Egho Center Sport - Proyecto 1ª Evaluación</title>
 </head>
 <body>
-    <div class="header" id="header" align="center">
-
-    </div>
