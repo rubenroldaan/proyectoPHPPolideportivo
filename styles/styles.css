@@ -93,23 +93,24 @@ input:focus{
 header {
     background-color: rgb(89, 131, 255) !important;
     width: 100%;
-    position: fixed;
     z-index: 10;
+    display: block;
 }
 
-header div {
+header div.logo {
     align-content: center;
     display: inline;
+    width: 20px;
 }
 
 header div img {
-    margin-top: auto;
-    margin-bottom: auto;
+    position: relative;
+    margin-top: -5%;
     width: 10%;
 }
 
 .wrapper {
-    width: 80%;
+    width: 60%;
     margin: auto;
     overflow: hidden;
     display: inline-block;
@@ -138,6 +139,32 @@ nav ul li:hover {
     background: rgb(59, 87, 172);
 }
 
-nav ul li a:hover {
+nav ul li a:hover, nav ul li a:visited, nav ul li a:active {
+    text-decoration: none;
     color:white;
+}
+
+#contenedor {
+    width: 85%;
+    height: auto;
+    background: rgb(59, 87, 172);
+    padding: 20px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 6px;
+}
+
+#tablaInstalaciones {
+    padding: 0;
+    width: 100%;
+}
+
+#tablaInstalaciones td {
+    width: 50%;
+    text-align: center;
+}
+
+.imagenInstalacion {
+    width: 50%;
 }

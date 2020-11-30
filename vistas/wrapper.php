@@ -5,9 +5,9 @@
     <section class="wrapper">
         <nav>
             <ul>
-                <li><a href="#">USUARIOS</a></li>
-                <li><a href="#">INSTALACIONES</a></li>
-                <li><a href="#">RESERVAS</a></li>
+                <li><a href="index.php?action=mostrarListaUsuarios">USUARIOS</a></li>
+                <li><a href="index.php?action=mostrarListaInstalaciones">INSTALACIONES</a></li>
+                <li><a href="index.php?action=mostrarCalendario">RESERVAS</a></li>
             </ul>
         </nav>
     </section>

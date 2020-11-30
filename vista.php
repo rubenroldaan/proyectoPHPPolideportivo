@@ -8,6 +8,7 @@
             $this->secure = new Secure();
             include_once("vistas/header.php");
             if ($this->secure->haySesionIniciada()){include_once("vistas/wrapper.php");}
+            if ($this->secure->haySesionIniciada()){include_once("vistas/info-user.php");}
             include_once("vistas/$nombre_vista.php");
             if ($this->secure->haySesionIniciada()) {include_once("vistas/footer.php");}
         }

@@ -3,14 +3,16 @@
     include_once("vista.php");
     include_once("models/secure.php");
     include_once("models/user.php");
+    include_once("models/instalacion.php");
 
     class Controller {
-        private $vista, $secure, $user;
+        private $vista, $secure, $user, $instalacion;
 
         public function __construct() {
             $this->vista = new Vista();
             $this->secure = new Secure();
             $this->user = new User();
+            $this->instalacion = new Instalacion();
         }
 
         public function formLogin() {
@@ -124,6 +126,14 @@
                 }
 
                 $this->mostrarListaUsuarios();
+            }
+        }
+
+        public function mostrarListaInstalaciones() {
+            if ($this->secure->haySesionIniciada()) {
+                // HAY QUE PONER SI ES ADMINISTRADOR
+                $data['lista_instalaciones'] = $this->instalacion->getAll();
+                $this->vista->mostrar("instalacion/listaInstalaciones",$data);
             }
         }
     }
