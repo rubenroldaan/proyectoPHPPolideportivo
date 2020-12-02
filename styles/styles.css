@@ -166,5 +166,54 @@ nav ul li a:hover, nav ul li a:visited, nav ul li a:active {
 }
 
 .imagenInstalacion {
+    width: 20em;
+    height: 15em;
+}
+
+#tablaInstalaciones td {
+    color: white;
+}
+
+.celdaModificarInstalacion {
+    display: none;
+}
+
+#tablaInstalaciones table tr td:last-child {
+    display: none;
+}
+
+#tablaInstalaciones button {
+    display: block;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-bottom: 25%;
+    margin-right: auto;
     width: 50%;
+    height: 40px;
+    border-radius: 30px;
+    transition: all 0.5s ease;
+    border: 2px solid black;
+}
+
+#tablaInstalaciones table a:visited, #tablaInstalaciones table a:hover, #tablaInstalaciones table a:active {
+    text-decoration: none;
+    cursor: default;
+}
+
+#tablaInstalaciones table button.botonModificarInstalacion {
+    background: #71c8e2
+}
+
+#tablaInstalaciones table button.botonModificarInstalacion:hover {
+    background: #2282a0;
+    color: #bfe8f5;
+}
+
+#tablaInstalaciones table button.botonEliminarInstalacion{
+    background: #e46f79;
+}
+
+#tablaInstalaciones table button.botonEliminarInstalacion:hover {
+    background: #d64551;
+    color:  #ffc5ca;
 }

@@ -136,4 +136,16 @@
                 $this->vista->mostrar("instalacion/listaInstalaciones",$data);
             }
         }
+
+        public function confirmacionBorrarInstalacion() {
+            if ($this->secure->haySesionIniciada()) {
+                // HAY QUE PONER SI ES ADMINISTRADOR
+                $id_instalacion = $_REQUEST['id_instalacion'];
+                echo '<script>
+                    var opcion = confirm("¿Estás seguro de eliminar la instalación? Pueden haber reservas.");
+                    if (opcion) {location.href="index.php?action=borrarInstalacion&id_instalacion='.$id_instalacion.'"}
+                    else{location.href="index.php?action=mostrarListaInstalaciones"}
+                </script>';
+            }
+        }
     }

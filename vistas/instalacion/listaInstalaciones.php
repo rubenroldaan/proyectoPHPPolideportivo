@@ -9,8 +9,27 @@
             echo '<tr>';
         }
         echo '<td>
-                <img src="imgs/instalaciones/'.$instalacion->imagen.'" class="imagenInstalacion"><br>
-                '.$instalacion->nombre.'
+                <p>'.$instalacion->nombre.'</p>
+                <table>
+                <tr><td>
+                <img src="imgs/instalaciones/'.$instalacion->imagen.'" class="imagenInstalacion" onclick="$(\'.celdaModificarInstalacion'.$instalacion->id_instalacion.'\').toggle();$(\'.nombreInstalacion'.$instalacion->id_instalacion.'\').toggle();"><br></td>
+                <td class="celdaModificarInstalacion'.$instalacion->id_instalacion.'">
+                <table>
+                <tr style="height:50%">
+                <a href="index.php?action=formModificarInstalacion&id_instalacion='.$instalacion->id_instalacion.'">
+                <button class="botonModificarInstalacion">Modificar</button>
+                </a>
+                </tr>
+                <tr style="height:50%">
+                <a href="index.php?action=confirmacionBorrarInstalacion&id_instalacion='.$instalacion->id_instalacion.'">
+                <button class="botonEliminarInstalacion">Eliminar</button>
+                </a>
+                </tr>
+                </table>
+                </td>
+                </tr>
+                </table>
+                
               </td>';
         $cont++;
 
