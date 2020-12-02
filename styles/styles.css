@@ -217,3 +217,7 @@ nav ul li a:hover, nav ul li a:visited, nav ul li a:active {
     background: #d64551;
     color:  #ffc5ca;
 }
+
+.botonNuevoUsuario {
+    position: relative;
+}

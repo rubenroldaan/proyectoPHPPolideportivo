@@ -45,11 +45,16 @@
             $this->vista->mostrar("user/formLogin",$data);
         }
 
+        public function errorSesion() {
+            $data['msjError'] = 'Debes iniciar sesión para continuar';
+            $this->vista->mostrar("user/formLogin",$data);
+        }
+
         public function mostrarCalendario() {
-            if (!$this->secure->haySesionIniciada()) {
-                $this->formLogin();
-            } else {
+            if ($this->secure->haySesionIniciada()) {
                 $this->vista->mostrar("calendar/calendario");
+            } else {
+                $this->errorSesion();
             }
         }
 
@@ -68,6 +73,8 @@
                 // HAY QUE PONER SI ES ADMINISTRADOR
                 $data['lista_users'] = $this->user->getAll();
                 $this->vista->mostrar("user/listaUsers",$data);
+            } else {
+                $this->errorSesion();
             }
         }
 
@@ -78,7 +85,9 @@
                 if ($data['user'] = $this->user->get($user)) {
                     $this->vista->mostrar("user/formularioModificarUsuario",$data);
                 }
-            }    
+            } else {
+                $this->errorSesion();
+            }
         }
 
         public function modificarUsuario() {
@@ -93,6 +102,8 @@
                 }
 
                 $this->mostrarListaUsuarios();
+            } else {
+                $this->errorSesion();
             }
         }
 
@@ -109,6 +120,8 @@
                         location.href = "index.php?action=mostrarListaUsuarios";
                     }
                 </script>';
+            } else {
+                $this->errorSesion();
             }
         }
 
@@ -126,6 +139,17 @@
                 }
 
                 $this->mostrarListaUsuarios();
+            } else {
+                $this->errorSesion();
+            }
+        }
+
+        public function formInsertarUsuario() {
+            if ($this->secure->haySesionIniciada()) {
+                // HAY QUE PONER SI ES ADMINISTRADOR
+                $this->vista->mostrar("user/formularioInsertarUsuario");
+            } else {
+                $this->errorSesion();
             }
         }
 
@@ -134,6 +158,8 @@
                 // HAY QUE PONER SI ES ADMINISTRADOR
                 $data['lista_instalaciones'] = $this->instalacion->getAll();
                 $this->vista->mostrar("instalacion/listaInstalaciones",$data);
+            } else {
+                $this->errorSesion();
             }
         }
 
@@ -146,6 +172,27 @@
                     if (opcion) {location.href="index.php?action=borrarInstalacion&id_instalacion='.$id_instalacion.'"}
                     else{location.href="index.php?action=mostrarListaInstalaciones"}
                 </script>';
+            } else {
+                $this->errorSesion();
+            } 
+        }
+
+        public function borrarInstalacion() {
+            if ($this->secure->haySesionIniciada()) {
+                // HAY QUE PONER SI ES ADMINISTRADOR
+                $id_instalacion = $_REQUEST['id_instalacion'];
+                $result = $this->instalacion->delete($id_instalacion);
+
+                if ($result == 1) {
+                    $data['msjInfo'] = 'Instalación borrada con éxito';
+                } else {
+                    $data['msjError'] = 'No se ha podido eliminar la instalación. Por favor inténtelo de nuevo más tarde';
+                }
+
+                $data['lista_instalaciones'] = $this->instalacion->getAll();
+                $this->vista->mostrar("instalacion/instalaciones",$data);
+            } else {
+                $this->errorSesion();
             }
         }
     }

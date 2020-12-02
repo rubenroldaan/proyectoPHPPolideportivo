@@ -6,13 +6,44 @@
     if (isset($data['msjError'])) {
         echo '<p>$data'.$data["msjError"].'"</p>';
     }
-    echo '<p><a href="index.php?action=nuevoUsuario">Crear usuario</a></p>';
-    echo '<table class="tablaUsuarios" cellspacing="0" border="1px solid black">';
+    echo '<button class="botonNuevoUsuario" onclick="$(\'#tablaUsuarios\').append(
+        <form action=\'index.php\' method=\'post\'>
+        <tr>
+            <td></td>
+            <td>
+                <input type=\'text\' name=\'nombre\' required>*
+            </td>
+            <td>
+                <input type=\'text\' name=\'apellido1\'>
+            </td>
+            <td>
+                <input type=\'text\' name=\'apellido2\'>
+            </td>
+            <td>
+                <input type=\'text\' name=\'mail\' required>*
+            </td>
+            <td>
+                <input type=\'password\' name=\'passwd\' required>*
+            </td>
+            <td>
+                <input type=\'text\' name=\'dni\' required>*
+            </td>
+            <td>
+                <input type=\'file\' name=\'imagen\'>
+            </td>
+        </tr>
+        </form>
+        
+        )">Añadir usuario</button>';
+    echo '<table id="tablaUsuarios" class="tablaUsuarios" cellspacing="0" border="1px solid black">';
         echo '<thead class="theadUsuarios">';
         echo '<tr>';
         echo '<td>ID</td>';
         echo '<td>Nombre</td>';
+        echo '<td colspan="2">Apellidos</td>';
         echo '<td>Correo</td>';
+        echo '<td>DNI</td>';
+        echo '<td>Imagen (click aquí)</td>';
         echo '</tr>';
         echo '</thead>';
         echo '<tbody class="cuerpoUsuarios">';

@@ -22,4 +22,10 @@
             $result = $this->db->consulta("SELECT * FROM instalaciones");
             return $result;
         }
+
+        public function delete($id_instalacion) {
+            $this->db->modificacion("DELETE FROM instalacion WHERE id_instalacion='$id_instalacion'");
+
+            return $this->db->filasAfectadas();
+        }
     }
