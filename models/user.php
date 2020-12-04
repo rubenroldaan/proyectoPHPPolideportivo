@@ -62,7 +62,7 @@
                                                                 rol='$rol',
                                                                 imagen='$dni.png'
                                                 WHERE id_user='$id_user'");
-            return $result;
+            return $this->db->filasAfectadas();
         }
 
         public function procesarImagen() {

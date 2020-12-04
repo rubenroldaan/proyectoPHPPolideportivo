@@ -94,14 +94,15 @@
             if ($this->secure->haySesionIniciada()) {
                 // HAY QUE PONER SI ES ADMINISTRADOR
                 $imgResult = $this->user->procesarImagen();
-                $result = $this->user->update();
-                if ($result == 1) {
-                    $data['msjInfo'] = 'Usuario modificado con éxito';
-                } else {
-                    $data['msjError'] = 'No se ha podido modificar el usuario. Por favor, inténtelo de nuevo.';
-                }
-
+                    $result = $this->user->update();
+                    if ($result == 1 && $imgResult) {
+                        $data['msjInfo'] = 'Usuario modificado con éxito';
+                    } else {
+                        $data['msjError'] = 'No se ha podido modificar el usuario. Por favor, inténtelo de nuevo.';
+                    }
                 $this->mostrarListaUsuarios();
+
+                
             } else {
                 $this->errorSesion();
             }
@@ -195,4 +196,66 @@
                 $this->errorSesion();
             }
         }
+
+        public function formModificarInstalacion() {
+            if ($this->secure->haySesionIniciada()) {
+                // HAY QUE PONER SI ES ADMINISTRADOR
+                $id_instalacion = $_REQUEST['id_instalacion'];
+                if ($data['instalacion'] = $this->instalacion->get($id_instalacion)) {
+                    $this->vista->mostrar("instalacion/formularioModificarInstalacion",$data);
+                }
+            } else {
+                $this->errorSesion();
+            }
+        }
+
+        public function modificarInstalacion() {
+            if ($this->secure->haySesionIniciada()) {
+                // HAY QUE PONER SI ES ADMINISTRADOR
+                    $imgResult = $this->instalacion->procesarImagen();
+                    if ($imgResult) {
+                        $result = $this->instalacion->update();
+                        if ($result == 1) {
+                            $data['msjInfo'] = 'Instalación modificada con éxito';
+                        } else {
+                            $data['msjError'] = 'No se ha podido modificar la instalación. Inténtelo de nuevo';
+                        }
+                    } else {
+                        // HACERLO EN AJAX SI HAY TIEMPO
+                    }
+                    
+                    
+                $this->mostrarListaInstalaciones();
+            } else {
+                $this->errorSesion();
+            }
+        }
+
+        public function formInsertarInstalacion() {
+            if ($this->secure->haySesionIniciada()) {
+                // HAY QUE PONER SI ES ADMINISTRADOR
+                $this->vista->mostrar("instalacion/formularioInsertarInstalacion");
+            } else {
+                $this->errorSesion();
+            }
+        }
+
+        public function insertarInstalacion() {
+            if ($this->secure->haySesionIniciada()) {
+                // HAY QUE PONER SI ES ADMINISTRADOR
+                $result = $this->instalacion->insert();
+
+                if ($result == 1) {
+                    $data['msjInfo'] = 'Instalación creada con éxito';
+                } else {
+                    $data['msjError'] = 'No se ha podido crear la instalación';
+                }
+
+                $data['lista_instalaciones'] = $this->instalacion->getAll();
+                $this->vista->mostrar("instalacion/listaInstalaciones",$data);
+            } else {
+                $this->errorSesion();
+            }
+        }
+        
     }
