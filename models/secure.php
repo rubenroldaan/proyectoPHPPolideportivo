@@ -6,6 +6,7 @@
             $_SESSION['mail'] = $user->mail;
             $_SESSION['nombre_user'] = $user->nombre;
             $_SESSION['pic_user'] = $user->imagen;
+            $_SESSION['rol_user'] = $user->rol;
         }
 
         public function logOut() {
@@ -34,12 +35,10 @@
             $this->vista->mostrar('user/errorPermisos',$data);
         }
 
-        /*public function isAdmin($user) {
-            $result = false;
-            $usuario = $this->db->consulta("SELECT rol FROM users WHERE mail='$user'");
-            if ($usuario == 'A') {
-                $result = true;
-            }
-            return $result;
-        }*/
+        public function isAdmin() {
+            //A = Admin
+            //R = Registrado
+            //D = Deshabilitado
+            return $_SESSION['rol_user'] == 'A';
+        }
     }

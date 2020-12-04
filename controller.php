@@ -4,15 +4,17 @@
     include_once("models/secure.php");
     include_once("models/user.php");
     include_once("models/instalacion.php");
+    include_once("models/reserva.php");
 
     class Controller {
-        private $vista, $secure, $user, $instalacion;
+        private $vista, $secure, $user, $instalacion, $reserva;
 
         public function __construct() {
             $this->vista = new Vista();
             $this->secure = new Secure();
             $this->user = new User();
             $this->instalacion = new Instalacion();
+            $this->reserva = new Reserva();
         }
 
         public function formLogin() {
@@ -48,14 +50,6 @@
         public function errorSesion() {
             $data['msjError'] = 'Debes iniciar sesión para continuar';
             $this->vista->mostrar("user/formLogin",$data);
-        }
-
-        public function mostrarCalendario() {
-            if ($this->secure->haySesionIniciada()) {
-                $this->vista->mostrar("calendar/calendario");
-            } else {
-                $this->errorSesion();
-            }
         }
 
         public function buscarUser() {
@@ -257,5 +251,25 @@
                 $this->errorSesion();
             }
         }
-        
+
+        public function mostrarCalendarioPrueba() {
+            if ($this->secure->haySesionIniciada()) {
+                $this->vista->mostrar("../calendarioPrueba");
+            } else {
+                $this->errorSesion();
+            }
+        }
+
+        public function mostrarCalendario() {
+            if ($this->secure->haySesionIniciada()) {
+                if ($this->secure->isAdmin()) {
+                    $data['lista_reservas'] = $this->reserva->getAll();
+                } else {
+                    $data['lista_reservas'] = $this->reserva->getSelected($_SESSION['id_user']);
+                }
+                $this->vista->mostrar("calendar/calendario", $data);
+            } else {
+                $this->errorSesion();
+            }
+        }
     }

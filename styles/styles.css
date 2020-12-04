@@ -277,3 +277,41 @@ textarea {
     background: #56d672 !important;
     color: white;
 }
+
+table#calendar1 {
+    border: 1px solid black;
+    position: relative;
+    width: 100%;
+}
+
+table#calendar1, table#calendar2 {
+    border-radius: 5px;
+    background: white;
+}
+
+table#calendar2 {
+    width: 100%;
+    border: 1px solid black;
+}
+
+#calendarios {
+    width: 100%;
+    text-align: center;
+    
+}
+
+#calendarios table td, #calendarios table th {
+    padding: 16px;
+    vertical-align: top;
+}
+
+
+td.hoy {
+    background-color: #75acff;
+}
+
+.fechaCalendar1, .fechaCalendar2 {
+    color: white;
+    margin-bottom: 2%;
+    font-size: 22px;
+}
