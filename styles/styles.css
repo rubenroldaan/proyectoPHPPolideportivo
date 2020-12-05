@@ -315,3 +315,30 @@ td.hoy {
     margin-bottom: 2%;
     font-size: 22px;
 }
+
+#tablaUsuarios {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: separate;
+    border: none;
+}
+
+.theadUsuarios {
+    text-align: center;
+    color: white;
+}
+
+#tablaUsuarios tr.usuario{
+    background-color: white;
+    border-radius: 5px;
+    height: 20%;
+}
+
+#tablaUsuarios tr.usuario td {
+    padding-bottom: 15px;
+    padding-left: 20px;
+}
+
+.filaEspacio {
+    padding-bottom: 20%;
+}

@@ -23,7 +23,6 @@
     
 
 
-
     echo '<div id="contenedor">';
     echo '<table id="calendarios">
     <tr><td>';
@@ -45,12 +44,28 @@
                     echo "<td>&nbsp;</td>";
                 } else {
                     // mostramos el dia
-                    if ($day == $diaActual)
-
-                        echo "<td class='hoy'>$day</td>";
-
-                    else
-                        echo "<td>$day</td>";
+                    if ($day == $diaActual) {
+                        echo "<td class='hoy'>$day";
+                    } else {
+                        echo "<td>$day";
+                    }
+                    if (is_array($data['lista_reservas'])) {
+                        foreach($data['lista_reservas'] as $reserva) {
+                            $diaFecha = substr($reserva->fecha, -2);
+                            $mesFecha = substr($reserva->fecha, 6,7);
+                            if (strlen($month) == 1) {
+                                $month = '0'.$month;
+                            }
+                            if (strlen($day) == 1) {
+                                $day = '0'.$day;
+                            }
+                            if ($day == substr($reserva->fecha, -2) && $month == substr($reserva->fecha, 5,2)) {
+                                echo 'p';
+                            }
+                        }
+                    }
+                    echo '</td>';
+                    
                     $day++;
                 }
                 // cuando llega al final de la semana, iniciamos una columna nueva
@@ -82,12 +97,29 @@
             }
             if ($i < $diaSemanaMesSiguiente || $i >= $last_cell) {
                 // celca vacia
-                echo "<td>&nbsp;</td>";
+                echo "<td>&nbsp;";
             } else {
                 // mostramos el dia
-                    echo "<td>$day</td>";
-                $day++;
+                    echo "<td>$day";
+                    if (is_array($data['lista_reservas'])) {
+                        foreach($data['lista_reservas'] as $reserva) {
+                            $diaFecha = substr($reserva->fecha, -2);
+                            $mesFecha = substr($reserva->fecha, 6,7);
+                            if (strlen($mesSiguiente) == 1) {
+                                $mesSiguiente = '0'.$mesSiguiente;
+                            }
+                            if (strlen($day) == 1) {
+                                $day = '0'.$day;
+                            }
+                            if ($day == substr($reserva->fecha, -2) && $mesSiguiente == substr($reserva->fecha, 5,2)) {
+                                echo 'p';
+                            }
+                        }
+                    }
+                
             }
+            $day++;
+            echo '</td>';
             // cuando llega al final de la semana, iniciamos una columna nueva
             if ($i % 7 == 0) {
 

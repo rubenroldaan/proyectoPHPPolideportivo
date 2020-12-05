@@ -6,57 +6,34 @@
     if (isset($data['msjError'])) {
         echo '<p>$data'.$data["msjError"].'"</p>';
     }
-    echo '<button class="botonNuevoUsuario" onclick="$(\'#tablaUsuarios\').append(
-        <form action=\'index.php\' method=\'post\'>
-        <tr>
-            <td></td>
-            <td>
-                <input type=\'text\' name=\'nombre\' required>*
-            </td>
-            <td>
-                <input type=\'text\' name=\'apellido1\'>
-            </td>
-            <td>
-                <input type=\'text\' name=\'apellido2\'>
-            </td>
-            <td>
-                <input type=\'text\' name=\'mail\' required>*
-            </td>
-            <td>
-                <input type=\'password\' name=\'passwd\' required>*
-            </td>
-            <td>
-                <input type=\'text\' name=\'dni\' required>*
-            </td>
-            <td>
-                <input type=\'file\' name=\'imagen\'>
-            </td>
-        </tr>
-        </form>
-        
-        )">Añadir usuario</button>';
-    echo '<table id="tablaUsuarios" class="tablaUsuarios" cellspacing="0" border="1px solid black">';
+    echo '<div id="contenedor">';
+    echo '<a href="index.php?action=formInsertarUsuario"><img src="imgs/button-new.png" class="botonNuevo" alt="Boton nuevo usuario" title="Nuevo usuario"></a>';
+    echo '<table id="tablaUsuarios" class="tablaUsuarios" cellspacing="0">';
         echo '<thead class="theadUsuarios">';
         echo '<tr>';
-        echo '<td>ID</td>';
-        echo '<td>Nombre</td>';
-        echo '<td colspan="2">Apellidos</td>';
-        echo '<td>Correo</td>';
-        echo '<td>DNI</td>';
-        echo '<td>Imagen (click aquí)</td>';
+        echo '<th>ID</th>';
+        echo '<th>Nombre</th>';
+        echo '<th>Apellidos</th>';
+        echo '<th>Correo</th>';
+        echo '<th>DNI</th>';
+        echo '<th>Imagen (click aquí)</th>';
         echo '</tr>';
         echo '</thead>';
         echo '<tbody class="cuerpoUsuarios">';
         foreach($data['lista_users'] as $user) {
-            echo '<tr>';
+            echo '<tr class="usuario">';
             echo '<td>'.$user->id_user.'</td>';
             echo '<td>'.$user->nombre.'</td>';
+            echo '<td>'.$user->apellido1.'&nbsp;'.$user->apellido2.'</td>';
             echo '<td>'.$user->mail.'</td>';
+            echo '<td>'.$user->dni.'</td>';
+            echo '<td><a href="#">Mostrar imagen</a></td>';
             echo '<td><a href="index.php?action=formModificarUsuario&id_user='.$user->id_user.'">
                     <img src="imgs/button-edit.png" id="buttonEdit" alt="Modificar usuario" title="Modificar usuario"></a></td>';
             echo '<td><a href="index.php?action=confirmacionBorrarUsuario&id_user='.$user->id_user.'">
                     <img src="imgs/borrar.png" id="botonBorrar" alt="Eliminar usuario" title="Eliminar usuario"></a></td>';
-            echo '</tr>';
+            echo '</tr><tr class="filaEspacio"><td>&nbsp;</td></tr>';
         }
         echo '</tbody>';
         echo '</table>';
+        echo '</div>';
