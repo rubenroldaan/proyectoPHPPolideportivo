@@ -342,3 +342,27 @@ td.hoy {
 .filaEspacio {
     padding-bottom: 20%;
 }
+
+.formInsertarUsuario {
+    color: white;
+    position: relative;
+    width: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.formUpdate {
+    width: 50%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.formUpdate input[type="file"] {
+    display: none;
+}
+
+.formUpdate label img {
+    width: 50%;
+    cursor: pointer;
+}

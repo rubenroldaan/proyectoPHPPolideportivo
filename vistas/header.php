@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="styles/styles.css">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="scripts/jquery-3-5-1.min.js"></script>
+    <script src="scripts/scripts.js"></script>
 
 <!------ Include the above in your HEAD tag ---------->
 

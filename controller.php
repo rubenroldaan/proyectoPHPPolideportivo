@@ -102,6 +102,20 @@
             }
         }
 
+        public function insertarUsuario() {
+            if ($this->secure->haySesionIniciada()) {
+                $result = $this->user->insert();
+
+                if ($result == 1) {
+                    $data['msjInfo'] = 'Usuario creado con exito';
+                } else {
+                    $data['msjError'] = 'No se ha podido crear el usuario. Inténtelo de nuevo más tarde';
+                }
+
+                $this->mostrarListaUsuarios();
+            }
+        }
+
         /*A ESTA FUNCIÓN HAY QUE AÑADIRLE MÁS ADELANTE LO DE LAS RESERVAS*/
         public function confirmacionBorrarUsuario() {
             if ($this->secure->haySesionIniciada()) {
@@ -271,5 +285,13 @@
             } else {
                 $this->errorSesion();
             }
+        }
+
+        public function comprobarCorreo() {
+            $user = $_REQUEST['mail'];
+
+            $result = $this->user->existeUser($user);
+
+            return $result;
         }
     }

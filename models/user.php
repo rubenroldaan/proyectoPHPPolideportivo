@@ -93,4 +93,27 @@
 
             return $this->db->filasAfectadas();
         }
+
+        public function existe($correo) {
+            $result = $this->db->consulta("SELECT* FROM users WHERE mail = '$correo'");
+            if ($result != null) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+        public function insert() {
+            $nombre = $_REQUEST['nombre'];
+            $apellido1 = $_REQUEST['apellido1'];
+            $apellido2 = $_REQUEST['apellido2'];
+            $passwd = $_REQUEST['passwd'];
+            $mail = $_REQUEST['mail'];
+            $dni = $_REQUEST['dni'];
+            $rol = $_REQUEST['rol'];
+
+            $this->db->modificacion("INSERT INTO users(nombre, apellido1, apellido2, mail, passwd, dni, rol) VALUES('$nombre','$apellido1','$apellido2','$mail','$passwd','$dni','$rol')");
+
+            return $this->db->filasAfectadas();
+        }
     }

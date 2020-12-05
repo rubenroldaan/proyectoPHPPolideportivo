@@ -3,7 +3,12 @@
         $user = $data['user'];
         echo '<h2 class="text-center">Modificar Usuario</h2>';
 
+        echo '<div id="contenedor">';
         echo '<form action="index.php" method="post" class="formUpdate" enctype="multipart/form-data">
+                <label for="imagen">
+                        <img src="imgs/prof_pics/'.$user->imagen.'">
+                </label>
+                <input type="file" name="imagen" id="imagen" value="'.$user->imagen.'"><br>
                 <input type="hidden" name="id_user" value="'.$user->id_user.'">
                 <input type="hidden" name="action" value="modificarUsuario">
                 Nombre: <br><input type="text" name="nombre" value="'.$user->nombre.'" size="50"><br>
@@ -29,3 +34,4 @@
                 echo '<br><br>';
                 echo '<input type="submit" value="Modificar usuario">
                 </form>';
+        echo '</div>';
