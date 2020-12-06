@@ -290,8 +290,28 @@
         public function comprobarCorreo() {
             $user = $_REQUEST['mail'];
 
-            $result = $this->user->existeUser($user);
+            $result = $this->user->existe($user);
 
-            return $result;
+            echo $result;
+        }
+
+        public function mostrarReservasSobreDiaCalendario() {
+            if ($this->secure->haySesionIniciada()) {
+                $user = $_REQUEST['id_user'];
+                $result = null;
+                $texto = '';
+                $dia = $_REQUEST['dia'];
+                $mes = $_REQUEST['mes'];
+                $result = array();
+                if ($this->secure->isAdmin()) {
+                    $result = $this->reserva->getAllDate($dia, $mes);
+                    
+                } else {
+                    $result = $this->reserva->getSelectedDate($user, $dia, $mes);
+                }
+                
+                echo count($result);
+
+            }
         }
     }

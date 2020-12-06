@@ -24,6 +24,8 @@
 
 
     echo '<div id="contenedor">';
+    echo '<div id="mes1" style="display:none">'.$month.'</div>';
+    echo '<div id="mes2" style="display:none">'.$mesSiguiente.'</div>';
     echo '<table id="calendarios">
     <tr><td>';
     echo '<table id="calendar1">
@@ -45,11 +47,14 @@
                 } else {
                     // mostramos el dia
                     if ($day == $diaActual) {
-                        echo "<td class='hoy'>$day";
+                        echo "<td id='$day' class='hoy'>";
                     } else {
-                        echo "<td>$day";
+                        echo "<td id='$day'>";
                     }
                     if (is_array($data['lista_reservas'])) {
+                        // EN ESTE ARRAY SE GUARDAN LOS DIAS QUE SE HAN ESCRITO RESERVAS PARA QUE ASI,
+                        // SI EN UN MISMO DIA HAY MAS DE UNA RESERVA, NO SE REESCRIBA SOBRE EL.
+                        $reservasEscritas = array();
                         foreach($data['lista_reservas'] as $reserva) {
                             $diaFecha = substr($reserva->fecha, -2);
                             $mesFecha = substr($reserva->fecha, 6,7);
@@ -59,12 +64,14 @@
                             if (strlen($day) == 1) {
                                 $day = '0'.$day;
                             }
-                            if ($day == substr($reserva->fecha, -2) && $month == substr($reserva->fecha, 5,2)) {
-                                echo 'p';
+                            if ($day == substr($reserva->fecha, -2) && $month == substr($reserva->fecha, 5,2) && !in_array(substr($reserva->fecha, -2), $reservasEscritas)) {
+                                $reservasEscritas[] = substr($reserva->fecha, -2);
+                                echo '<div class="diaConReserva" onmouseover="mostrar_reservas_en_calendario_mes1('.$day.','.$month.')">';
                             }
                         }
                     }
-                    echo '</td>';
+                    echo $day.'</div></td>';
+
                     
                     $day++;
                 }
@@ -102,6 +109,7 @@
                 // mostramos el dia
                     echo "<td>$day";
                     if (is_array($data['lista_reservas'])) {
+                        $reservasEscritas = array();
                         foreach($data['lista_reservas'] as $reserva) {
                             $diaFecha = substr($reserva->fecha, -2);
                             $mesFecha = substr($reserva->fecha, 6,7);
@@ -130,3 +138,10 @@
     
     echo '</table>
     </td></tr></table>';
+
+    /*id = this.parentNode.id;
+                                    var div = document.createElement(\'div\');
+                                    div.setAttribute(\'id\', \''.$day.'\');
+                                    this.parentNode.appendChild(div);
+                                " onmouseout="
+                                    this.parentNode.removeChild(this.parentNode.lastChild)*/

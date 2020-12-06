@@ -366,3 +366,13 @@ td.hoy {
     width: 50%;
     cursor: pointer;
 }
+
+div.diaConReserva {
+    background-color: #f7a7ae;
+    width: 100%;
+}
+
+img.puntoRojoReserva {
+    width: 5%;
+    margin-left: 0;
+}

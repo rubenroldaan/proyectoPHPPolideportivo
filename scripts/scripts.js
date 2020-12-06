@@ -32,21 +32,52 @@ function validar() {
 
 function validar_correo() {
 	peticion_http = new XMLHttpRequest();
-	peticion_http.onreadystatechange = procesa_respuesta();
+	peticion_http.onreadystatechange = procesar_correo;
 	correo = document.getElementById("correo").value;
 	peticion_http.open('GET','http://localhost/egho/index.php?action=comprobarCorreo&mail=' + correo,true);
 	peticion_http.send(null)
 	console.log("hola")
 }
 
-function procesa_respuesta() {
+function procesar_correo() {
 	if (peticion_http.readyState == 4) {
 		if (peticion_http.status == 200) {
 			if (peticion_http.responseText == "1") {
 				document.getElementById("errorCorreo").innerHTML = 'Ya existe una cuenta con este correo.';
 			} else if (peticion_http.responseText == "0") {
+				document.getElementById("errorCorreo").innerHTML = '';
 				console.log("ok")
 			}
 		}
 	}
+}
+
+function mostrar_reservas_en_calendario_mes1(dia, mes) {
+	peticion_http = new XMLHttpRequest();
+	peticion_http.onreadystatechange = procesar_reservas;
+	user = document.getElementById("id_user");
+	peticion_http.open("GET",'http://localhost/egho/index.php?action=mostrarReservasSobreDiaCalendario&id_user=' + user + '&mes=' + mes + '&dia=' + dia, true);
+	peticion_http.send(null)
+	console.log(dia)
+}
+
+
+function procesar_reservas() {
+	if (peticion_http.readyState == 4) {
+		if (peticion_http.status == 200) {
+			if (peticion_http.responseText != null) {
+				divsDias = document.getElementsByClassName("diaConReserva");
+				for (var i = 0; i < divsDias.length; i++) {
+					divsDias[i].title = 'Tienes ' + peticion_http.responseText + ' reservas.';
+					
+				}
+			} else if (peticion_http.responseText == null) {
+				document.getElementsByClassName("diaSinReserva").title = 'No hay reservas';
+			}
+		}
+	}
+}
+
+function crearDiv() {
+	console.log(this.title)
 }
