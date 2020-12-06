@@ -47,9 +47,9 @@
                 } else {
                     // mostramos el dia
                     if ($day == $diaActual) {
-                        echo "<td id='$day' class='hoy'>";
+                        echo "<td class='hoy'>";
                     } else {
-                        echo "<td id='$day'>";
+                        echo "<td>";
                     }
                     if (is_array($data['lista_reservas'])) {
                         // EN ESTE ARRAY SE GUARDAN LOS DIAS QUE SE HAN ESCRITO RESERVAS PARA QUE ASI,
@@ -70,7 +70,7 @@
                             }
                         }
                     }
-                    echo $day.'</div></td>';
+                    echo '<a href="index.php?action=mostrarReservasDetalladas&id_user='.$_SESSION['id_user'].'&dia='.$day.'&mes='.$month.'">'.$day.'</div></td>';
 
                     
                     $day++;

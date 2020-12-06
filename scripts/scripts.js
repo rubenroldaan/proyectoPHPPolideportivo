@@ -68,11 +68,8 @@ function procesar_reservas() {
 			if (peticion_http.responseText != null) {
 				divsDias = document.getElementsByClassName("diaConReserva");
 				for (var i = 0; i < divsDias.length; i++) {
-					divsDias[i].title = 'Tienes ' + peticion_http.responseText + ' reservas.';
-					
+					divsDias[i].title = 'Existe ' + peticion_http.responseText + ' reserva/s.';
 				}
-			} else if (peticion_http.responseText == null) {
-				document.getElementsByClassName("diaSinReserva").title = 'No hay reservas';
 			}
 		}
 	}

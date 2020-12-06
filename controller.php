@@ -309,9 +309,24 @@
                 } else {
                     $result = $this->reserva->getSelectedDate($user, $dia, $mes);
                 }
-                
+
                 echo count($result);
 
+            }
+        }
+
+        public function mostrarReservasDetalladas() {
+            if ($this->secure->haySesionIniciada()) {
+                $dia = $_REQUEST['dia'];
+                $mes = $_REQUEST['mes'];
+                $id_user = $_REQUEST['id_user'];
+                if ($this->secure->isAdmin()) {
+                    $data['lista_reservas'] = $this->reserva->getAllDate($dia,$mes);
+                } else {
+                    $data['lista_reservas'] = $this->reserva->getSelectedDate($id_user,$dia,$mes);
+                }
+
+                $this->vista->mostrar("reserva/listaReservasDetalladas",$data);
             }
         }
     }
