@@ -52,6 +52,11 @@
             $this->vista->mostrar("user/formLogin",$data);
         }
 
+        public function errorPermisos() {
+            $data['msjError'] = 'No tienes permisos para realizar esta acción.';
+            $this->vista->mostrar("user/formLogin",$data);
+        }
+
         public function buscarUser() {
             $user = $_REQUEST['mail'];
             $result = null; 
@@ -279,7 +284,7 @@
                 if ($this->secure->isAdmin()) {
                     $data['lista_reservas'] = $this->reserva->getAll();
                 } else {
-                    $data['lista_reservas'] = $this->reserva->getSelected($_SESSION['id_user']);
+                    $data['lista_reservas'] = $this->reserva->getSelected($this->secure->idUser());
                 }
                 $this->vista->mostrar("calendar/calendario", $data);
             } else {
@@ -321,12 +326,39 @@
                 $mes = $_REQUEST['mes'];
                 $id_user = $_REQUEST['id_user'];
                 if ($this->secure->isAdmin()) {
-                    $data['lista_reservas'] = $this->reserva->getAllDate($dia,$mes);
+                    $result = $this->reserva->getAllDateJoin($dia,$mes);
+
+                    if ($result) {
+                        $data['lista_reservas'] = $result;
+                    } else {$data['lista_reservas'] = null;}
                 } else {
                     $data['lista_reservas'] = $this->reserva->getSelectedDate($id_user,$dia,$mes);
                 }
 
                 $this->vista->mostrar("reserva/listaReservasDetalladas",$data);
+            } else {
+                $this->errorSesion();
+            }
+        }
+
+        public function formModificarReserva() {
+            if ($this->secure->haySesionIniciada()) {
+                $id_reserva = $_REQUEST['id_reserva'];
+                $data['lista_instalaciones'] = $this->instalacion->getAll();
+                if ($data['reserva'] = $this->reserva->get($id_reserva)) {
+                    if ($this->secure->isAdmin()) {
+                        $this->vista->mostrar("reserva/formularioModificarReserva",$data);
+                    } else {
+                        if ($this->secure->rolUser() != $data['reserva']->id_user) {
+                            $data['msjError'] = 'No tienes permisos para modificar las incidencias de otros usuarios!';
+                            $this->errorPermisos();
+                        } else {
+                            $this->vista->mostrar("reserva/formularioModificarReserva",$data);
+                        }
+                    }
+                }
+            } else {
+                $this->errorSesion();
             }
         }
     }

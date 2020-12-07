@@ -382,4 +382,40 @@ img.puntoRojoReserva {
 
 table#reservas {
     width: 100%;
+    color: white;
+}
+
+tbody.tbodyReservas tr {
+    color: black;
+}
+
+.filaReserva {
+    position: relative;
+    background-color: white;
+    text-align: center;
+    top: 15px;
+}
+
+.theadReservas {
+    text-align: center;
+}
+
+.celdaModificar {
+    width: 5%;
+}
+
+.celdaEliminar {
+    width: 5%;
+}
+
+img.botonModificar {
+    width: 120%;
+}
+
+img.botonModificar {
+    width: 100%;
+}
+
+img.botonCancelar {
+    width: 100%;
 }

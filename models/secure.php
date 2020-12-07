@@ -41,4 +41,13 @@
             //D = Deshabilitado
             return $_SESSION['rol_user'] == 'A';
         }
+
+        public function rolUser() {
+
+            return $_SESSION['rol_user'];
+        }
+
+        public function idUser() {
+            return $_SESSION['id_user'];
+        }
     }

@@ -3,6 +3,8 @@
     $cont = 0;
     echo '<div id="contenedor">';
 
+    echo '<h2 align="center" style="color:white;">Gestión de instalaciones</h2>';
+
     echo '<a href="index.php?action=formInsertarInstalacion"><img src="imgs/button-new.png" class="botonNuevo" alt="Boton nueva instalacion" title="Nueva instalacion"></a>';
 
     if (isset($data['msjInfo'])) {
@@ -18,7 +20,7 @@
             echo '<tr>';
         }
         echo '<td>
-                <p>'.$instalacion->nombre.' (<strong>'.$instalacion->precio.'€</strong>)</p>
+                <p>'.$instalacion->nombre.' (<strong>'.$instalacion->precio.'€/hora</strong>)</p>
                 <table>
                 <tr><td>
                 <img src="imgs/instalaciones/'.$instalacion->imagen.'.png" class="imagenInstalacion" onclick="$(\'.celdaModificarInstalacion'.$instalacion->id_instalacion.'\').toggle();$(\'.nombreInstalacion'.$instalacion->id_instalacion.'\').toggle();"><br></td>
