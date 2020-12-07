@@ -344,8 +344,19 @@
         public function formModificarReserva() {
             if ($this->secure->haySesionIniciada()) {
                 $id_reserva = $_REQUEST['id_reserva'];
-                $data['lista_instalaciones'] = $this->instalacion->getAll();
+                
                 if ($data['reserva'] = $this->reserva->get($id_reserva)) {
+                    $data['horas_instalacion'] = $this->instalacion->getHorario($data['reserva']->id_instalacion);
+
+                    $data['reservas_instalacion_mismo_dia'] = $this->reserva->getAllDateJoinInstalacion(substr($data['reserva']->fecha,-1,2),substr($data['reserva']->fecha,5,2),$data['reserva']->id_instalacion);
+                    $data['horas_tomadas'] = array();
+
+                    for ($i=0; $i < count($data['reservas_instalacion_mismo_dia']); $i++) {
+                        for ($j = $data['reservas_instalacion_mismo_dia'][$i]->hora_inicio; $j <= $data['reservas_instalacion_mismo_dia'][$i]->hora_fin; $j++) { 
+                            array_push($data['horas_tomadas'], $j);
+                        }
+                    }
+
                     if ($this->secure->isAdmin()) {
                         $this->vista->mostrar("reserva/formularioModificarReserva",$data);
                     } else {

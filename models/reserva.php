@@ -50,4 +50,13 @@
                                             WHERE DAY(reservas.fecha) = $dia AND MONTH(reservas.fecha) = $mes");
             return $result;
         }
+
+        public function getAllDateJoinInstalacion($dia,$mes,$id_instalacion) {
+            $result = $this->db->consulta("SELECT hora_inicio, hora_fin
+                                            FROM reservas
+                                            INNER JOIN instalaciones
+                                                ON reservas.id_instalacion = instalaciones.id_instalacion
+                                                WHERE DAY(reservas.fecha) = '$dia' AND MONTH(reservas.fecha) = '$mes' AND reservas.id_instalacion = $id_instalacion");
+            return $result;
+        }
     }

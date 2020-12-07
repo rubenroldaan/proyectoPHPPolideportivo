@@ -74,4 +74,10 @@
                                         VALUES('$nombre','$descripcion','$precio')");
             return $this->db->filasAfectadas();
         }
+
+        public function getHorario($id_instalacion) {
+            $result = $this->db->consulta("SELECT * FROM horario_instalaciones WHERE id_instalacion = '$id_instalacion'");
+
+            return $result[0];
+        }
     }

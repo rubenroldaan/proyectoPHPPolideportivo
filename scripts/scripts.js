@@ -78,3 +78,11 @@ function procesar_reservas() {
 function crearDiv() {
 	console.log(this.title)
 }
+
+function prohibirSeleccionarHora() {
+	alert("¡Ya existen reservas a esta hora!");
+}
+
+function validarSeleccionarHora() {
+	
+}
