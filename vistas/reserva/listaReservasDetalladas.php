@@ -3,7 +3,7 @@
     echo '<div id="contenedor">';
             echo '<table id="reservas" cellspacing="0">
                     <h2 align="center" style="color:white;">Gestión de reservas</h2>
-                    <a href="index.php?action=formCrearReserva"><img src="imgs/button-new.png" class="botonNuevo" alt="Boton nueva reserva" title="Nueva reserva"></a>
+                    <a href="index.php?action=formCrearReservaSeleccionarInstalacion"><img src="imgs/button-new.png" class="botonNuevo" alt="Boton nueva reserva" title="Nueva reserva"></a>
                     <thead class="theadReservas">
                         <th>Fecha</th>
                         <th>Hora de inicio</th>
@@ -17,7 +17,7 @@
             echo '<tbody class="tbodyReservas">';
 
             if (!is_array($data['lista_reservas'])) {
-                echo '<p style="color:red">No se han encontrado reservas. <a href="index.php?action=formCrearReserva">Crear reserva.</a></p>';
+                echo '<p style="color:red">No se han encontrado reservas. <a href="index.php?action=formCrearReservaSeleccionarInstalacion">Crear reserva.</a></p>';
             } else {
                 foreach($data['lista_reservas'] as $reserva) {
                     echo '<tr class="filaReserva">

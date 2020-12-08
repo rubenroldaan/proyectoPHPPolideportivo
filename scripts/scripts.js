@@ -75,6 +75,23 @@ function procesar_reservas() {
 	}
 }
 
+function mostrarImagenInstalacion(id_instalacion) {
+	peticion_http = new XMLHttpRequest();
+	peticion_http.onreadystatechange = procesarImagen;
+	peticion_http.open('GET','http://localhost/egho/index.php?action=devolverImagenInstalacion&id_instalacion=' + id_instalacion, true);
+	peticion_http.send(null)
+}
+
+function procesarImagen() {
+	if (peticion_http.readyState == 4) {
+		if (peticion_http.status == 200) {
+			if (peticion_http.responseText != null) {
+				document.getElementById("imagen").src = 'imgs/instalaciones/' + peticion_http.responseText + '.png'
+			}
+		}
+	}
+}
+
 function crearDiv() {
 	console.log(this.title)
 }
@@ -83,6 +100,27 @@ function prohibirSeleccionarHora() {
 	alert("¡Ya existen reservas a esta hora!");
 }
 
-function validarSeleccionarHora() {
-	
+function validarSeleccionarHora(id) {
+	horas_tomadas = document.getElementsByClassName("seleccionada")
+	console.log(horas_tomadas.length)
+
+	if (horas_tomadas.length >= 4 && document.getElementById(id).className == 'noSeleccionada') {
+		alert("No puedes reservar más de 4 horas en un mismo día");
+		document.getElementById(id).selected = false;
+	} else {
+		if (horas_tomadas.length == 0) {
+		} else {
+			if (document.getElementById(id).className == 'noSeleccionada' && document.getElementById(id + 1).className != 'seleccionada' && document.getElementById(id - 1).className != 'seleccionada') {
+				alert("¡Debes escoger horas seguidas para hacer la reserva!");
+				document.getElementById(id).selected = false;
+			} else {
+				if (document.getElementById(id).className == 'seleccionada') { 
+					document.getElementById(id).className = 'noSeleccionada';
+				}
+				else if (document.getElementById(id).className = 'noSeleccionada') { 
+					document.getElementById(id).className = 'seleccionada';
+				}
+			}
+		}
+	}
 }

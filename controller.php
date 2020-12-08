@@ -34,7 +34,7 @@
             if ($usuario) {
                 $this->secure->logIn($usuario);
                 /*PARA CAMBIAR MIENTRAS HAGO PRUEBAS*/
-                $this->mostrarListaUsuarios();
+                $this->mostrarCalendario();
             } else {
                 $data['msjError'] = 'Correo o contraseña incorrectos';
                 $this->vista->mostrar("user/formLogin",$data);
@@ -348,8 +348,9 @@
                 if ($data['reserva'] = $this->reserva->get($id_reserva)) {
                     $data['horas_instalacion'] = $this->instalacion->getHorario($data['reserva']->id_instalacion);
 
-                    $data['reservas_instalacion_mismo_dia'] = $this->reserva->getAllDateJoinInstalacion(substr($data['reserva']->fecha,-1,2),substr($data['reserva']->fecha,5,2),$data['reserva']->id_instalacion);
+                    $data['reservas_instalacion_mismo_dia'] = $this->reserva->getAllDateJoinInstalacion(substr($data['reserva']->fecha,-1,2),substr($data['reserva']->fecha,5,2),$data['reserva']->id_instalacion,$data['reserva']->id_reserva);
                     $data['horas_tomadas'] = array();
+                    $data['instalacion'] = $this->instalacion->get($data['reserva']->id_instalacion);
 
                     for ($i=0; $i < count($data['reservas_instalacion_mismo_dia']); $i++) {
                         for ($j = $data['reservas_instalacion_mismo_dia'][$i]->hora_inicio; $j <= $data['reservas_instalacion_mismo_dia'][$i]->hora_fin; $j++) { 
@@ -371,5 +372,44 @@
             } else {
                 $this->errorSesion();
             }
+        }
+
+        public function modificarReserva() {
+            if ($this->secure->haySesionIniciada()) {
+                $result = $this->reserva->update();
+                if ($result ==  1) {
+                    $data['msjInfo'] = 'Reserva actualizada con éxito';
+                } else {
+                    $data['msjError'] = 'No se ha podido actualizar la reserva';
+                }
+
+                $this->mostrarCalendario();
+            } else {
+                $this->errorSesion();
+            }
+        }
+
+        public function formCrearReservaSeleccionarInstalacion() {
+            if ($this->secure->haySesionIniciada()) {
+                $data['lista_instalaciones'] = $this->instalacion->getAll();
+
+                $this->vista->mostrar("reserva/formularioCrearReservaSeleccionarInstalacion",$data);
+            } else {
+                $this->errorSesion();
+            }
+        }
+
+        public function devolverImagenInstalacion() {
+            $id_instalacion = $_REQUEST['id_instalacion'];
+
+            $result = $this->instalacion->getImagen($id_instalacion);
+
+            echo $result->imagen;
+        }
+
+        public function formCrearReserva() {
+            $data['id_instalacion'] = $_REQUEST['instalacion'];
+
+            
         }
     }

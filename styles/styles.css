@@ -420,6 +420,10 @@ img.botonCancelar {
     width: 100%;
 }
 
+.formModificarReserva {
+    color: white;
+}
+
 .tablaHorarioReserva {
     width: 100%;
     text-align: center;
@@ -427,27 +431,96 @@ img.botonCancelar {
     border: 3px solid black;
     border-collapse: collapse;
     cursor: pointer;
+    color: black;
 }
 
-.celdaHoraTomada {
-    background-color: #f7a7ae;
+.celdaHoraBloqueada {
+    background-color: #ff6875;
     padding-top: 2%;
     padding-bottom: 2%;
     border: 1px solid black;
 }
 
-.celdaHoraTomada:hover {
+.celdaHoraBloqueada:hover {
     transition: all 0.6s ease;
-    background-color: #cc868c;
+    background-color: #ff4a59;
 }
 
 .celdaHoraNoTomada {
-    border: 1px solid black; 
+    border: 1px solid black;
+    background-color: white;
 }
-
-
 
 .celdaHoraNoTomada:hover {
     background-color: #e7ff90;
     transition: all 0.6s ease;
+}
+
+.celdaHoraTomada {
+    background-color: #bfd669;
+    border: 1px solid black;
+}
+
+.celdaHoraTomada:hover {
+    background-color: #98aa56;
+    transition: all 0.6s ease;
+}
+
+.formModificarReserva {
+    width: 100%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.formModificarReserva input[type="submit"] {
+    background: #7af094 !important;
+    color: black;
+    transition: all 0.5s ease;
+    border-radius: 15px !important;
+}
+
+.formModificarReserva input[type="submit"]:hover {
+    
+    color: rgb(255, 255, 255);
+}
+
+.formModificarReserva select {
+    width: 15%;
+    overflow-y: hidden;
+}
+
+.seleccionada, .noSeleccionada {
+    border: 1px solid black;
+}
+
+.formModificarReserva input[type="text"] {
+    border: none;
+    background-color: transparent;
+    overflow: hidden;
+    color: white;
+    text-align: center;
+}
+
+.formCrearReserva {
+    width: 100%;
+    color: white;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.formCrearReserva img {
+    width: 45%;
+}
+
+.formCrearReserva input[type="submit"] {
+    background: #7af094 !important;
+    color: black;
+}
+
+.formCrearReserva input[type="submit"]:hover {
+    background: #56d672 !important;
+    color: white;
 }

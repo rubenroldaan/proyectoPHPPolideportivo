@@ -1,5 +1,4 @@
 <?php
-    echo '<br><br><br>';
     if (isset($data['msjInfo'])) {
         echo '<p>$data'.$data["msjInfo"].'"</p>';
     }

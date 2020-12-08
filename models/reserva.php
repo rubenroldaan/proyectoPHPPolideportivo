@@ -51,12 +51,32 @@
             return $result;
         }
 
-        public function getAllDateJoinInstalacion($dia,$mes,$id_instalacion) {
+        public function getAllDateJoinInstalacion($dia,$mes,$id_instalacion,$id_reserva) {
             $result = $this->db->consulta("SELECT hora_inicio, hora_fin
                                             FROM reservas
                                             INNER JOIN instalaciones
                                                 ON reservas.id_instalacion = instalaciones.id_instalacion
-                                                WHERE DAY(reservas.fecha) = '$dia' AND MONTH(reservas.fecha) = '$mes' AND reservas.id_instalacion = $id_instalacion");
+                                                WHERE DAY(reservas.fecha) = '$dia' AND MONTH(reservas.fecha) = '$mes' AND reservas.id_instalacion = $id_instalacion AND reservas.id_reserva != '$id_reserva'");
+            return $result;
+        }
+
+        public function update() {
+            $id_reserva = $_REQUEST['id_reserva'];
+            $fecha = $_REQUEST['fecha'];
+            $horas = $_REQUEST['horas'];
+            $precio = count($horas) * $_REQUEST['precio_instalacion'];
+
+            sort($horas);
+            $hora_inicio = $horas[0];
+            $hora_fin = $horas[count($horas)-1];
+
+
+            $result = $this->db->modificacion("UPDATE reservas SET
+                                                                    fecha='$fecha',
+                                                                    hora_inicio='$hora_inicio',
+                                                                    hora_fin='$hora_fin',
+                                                                    precio='$precio'
+                                                WHERE id_reserva = '$id_reserva'");
             return $result;
         }
     }

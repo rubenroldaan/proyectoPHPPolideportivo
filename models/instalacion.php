@@ -80,4 +80,10 @@
 
             return $result[0];
         }
+
+        public function getImagen($id_instalacion) {
+            $result = $this->db->consulta("SELECT imagen FROM instalaciones WHERE id_instalacion = '$id_instalacion'");
+
+            return $result[0];
+        }
     }
