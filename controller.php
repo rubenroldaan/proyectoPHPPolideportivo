@@ -183,7 +183,8 @@
                 $id_instalacion = $_REQUEST['id_instalacion'];
                 echo '<script>
                     var opcion = confirm("¿Estás seguro de eliminar la instalación? Pueden haber reservas.");
-                    if (opcion) {location.href="index.php?action=borrarInstalacion&id_instalacion='.$id_instalacion.'"}
+                    if (opcion) {location.href="index.php?action=borrarInstalacion&id_instalacion='.$id_instalacion.'";
+                            location.href="index.php?action=mostrarListaInstalaciones"}
                     else{location.href="index.php?action=mostrarListaInstalaciones"}
                 </script>';
             } else {
@@ -204,7 +205,7 @@
                 }
 
                 $data['lista_instalaciones'] = $this->instalacion->getAll();
-                $this->vista->mostrar("instalacion/instalaciones",$data);
+                $this->vista->mostrar("instalacion/listaInstalaciones",$data);
             } else {
                 $this->errorSesion();
             }
@@ -257,6 +258,8 @@
             if ($this->secure->haySesionIniciada()) {
                 // HAY QUE PONER SI ES ADMINISTRADOR
                 $result = $this->instalacion->insert();
+                $id_instalacion = $this->instalacion->getLastID();
+                $this->instalacion->setHorario(10,22,$id_instalacion);
 
                 if ($result == 1) {
                     $data['msjInfo'] = 'Instalación creada con éxito';
@@ -392,6 +395,8 @@
         public function formCrearReservaSeleccionarInstalacion() {
             if ($this->secure->haySesionIniciada()) {
                 $data['lista_instalaciones'] = $this->instalacion->getAll();
+                $data['dia'] = $_REQUEST['dia'];
+                $data['mes'] = $_REQUEST['mes'];
 
                 $this->vista->mostrar("reserva/formularioCrearReservaSeleccionarInstalacion",$data);
             } else {
@@ -408,8 +413,38 @@
         }
 
         public function formCrearReserva() {
-            $data['id_instalacion'] = $_REQUEST['instalacion'];
+            if ($this->secure->haySesionIniciada()) {
+                $data['instalacion'] = $this->instalacion->get($_REQUEST['instalacion']);
 
+                $data['dia'] = $_REQUEST['dia'];
+                $data['mes'] = $_REQUEST['mes'];
+
+                $data['horas_instalacion'] = $this->instalacion->getHorario($data['instalacion']->id_instalacion);
+
+                $data['reservas_instalacion_mismo_dia'] = $this->reserva->getAllDateJoinInstalacionSinReserva($data['dia'],$data['mes'],$data['instalacion']->id_instalacion);
+                $data['horas_tomadas'] = array();
+
+                for ($i=0; $i < count($data['reservas_instalacion_mismo_dia']); $i++) {
+                    for ($j = $data['reservas_instalacion_mismo_dia'][$i]->hora_inicio; $j <= $data['reservas_instalacion_mismo_dia'][$i]->hora_fin; $j++) { 
+                        array_push($data['horas_tomadas'], $j);
+                    }
+                }
+
+                $this->vista->mostrar("reserva/formularioCrearReserva",$data);
+            } else {
+                $this->errorSesion();
+            }
             
+            
+        }
+
+        public function crearReserva() {
+            if ($this->secure->haySesionIniciada()) {
+                $result = $this->reserva->insert();
+
+                if ($result == 1) {
+                    echo '<script>location.href="index.php"</script>';
+                }
+            }
         }
     }

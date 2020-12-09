@@ -79,4 +79,30 @@
                                                 WHERE id_reserva = '$id_reserva'");
             return $result;
         }
+
+        public function getAllDateJoinInstalacionSinReserva($dia,$mes,$id_instalacion) {
+            $result = $this->db->consulta("SELECT hora_inicio, hora_fin
+                                            FROM reservas
+                                            INNER JOIN instalaciones
+                                                ON reservas.id_instalacion = instalaciones.id_instalacion
+                                                WHERE DAY(reservas.fecha) = '$dia' AND MONTH(reservas.fecha) = '$mes' AND reservas.id_instalacion = $id_instalacion");
+            return $result;
+        }
+
+        public function insert() {
+            $fecha = $_REQUEST['fecha'];
+            $horas = $_REQUEST['horas'];
+            $precio = count($horas) * $_REQUEST['precio_instalacion'];
+            $id_user = $_REQUEST['id_user'];
+            $id_instalacion = $_REQUEST['id_user'];
+
+            sort($horas);
+            $hora_inicio = $horas[0];
+            $hora_fin = $horas[count($horas)-1];
+
+            $result = $this->db->modificacion("INSERT INTO reservas (fecha, hora_inicio, hora_fin, precio, id_user, id_instalacion)
+                                                VALUES ('$fecha','$hora_inicio','$hora_fin','$precio','$id_user','$id_instalacion')");
+
+            return $result;
+        }
     }

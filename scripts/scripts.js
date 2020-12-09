@@ -109,6 +109,12 @@ function validarSeleccionarHora(id) {
 		document.getElementById(id).selected = false;
 	} else {
 		if (horas_tomadas.length == 0) {
+			if (document.getElementById(id).className == 'seleccionada') { 
+				document.getElementById(id).className = 'noSeleccionada';
+			}
+			else if (document.getElementById(id).className = 'noSeleccionada') { 
+				document.getElementById(id).className = 'seleccionada';
+			}
 		} else {
 			if (document.getElementById(id).className == 'noSeleccionada' && document.getElementById(id + 1).className != 'seleccionada' && document.getElementById(id - 1).className != 'seleccionada') {
 				alert("¡Debes escoger horas seguidas para hacer la reserva!");

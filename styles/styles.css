@@ -524,3 +524,26 @@ img.botonCancelar {
     background: #56d672 !important;
     color: white;
 }
+
+.seleccionada {
+    background-color: rgb(144, 144, 255)
+}
+
+.divSearch {
+    position: relative;
+    float: right;
+}
+
+.inputBusqueda {
+    border-radius: 3px;
+    border: 1px solid black;
+    width: 250px;
+    height: 30px;
+}
+
+.lupa {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    bottom: -10px;
+}

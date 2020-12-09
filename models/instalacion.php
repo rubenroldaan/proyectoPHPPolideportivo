@@ -24,7 +24,7 @@
         }
 
         public function delete($id_instalacion) {
-            $this->db->modificacion("DELETE FROM instalacion WHERE id_instalacion='$id_instalacion'");
+            $this->db->modificacion("DELETE FROM instalaciones WHERE id_instalacion='$id_instalacion'");
 
             return $this->db->filasAfectadas();
         }
@@ -70,9 +70,9 @@
             $descripcion = $_REQUEST['descripcion'];
             $precio = $_REQUEST['precio'];
 
-            $this->db->modificacion("INSERT INTO instalaciones(nombre, descripcion, precio)
+            $result = $this->db->modificacion("INSERT INTO instalaciones(nombre, descripcion, precio)
                                         VALUES('$nombre','$descripcion','$precio')");
-            return $this->db->filasAfectadas();
+            return $result;
         }
 
         public function getHorario($id_instalacion) {
@@ -85,5 +85,18 @@
             $result = $this->db->consulta("SELECT imagen FROM instalaciones WHERE id_instalacion = '$id_instalacion'");
 
             return $result[0];
+        }
+
+        public function getLastID() {
+            $result = $this->db->consulta("SELECT MAX(id_instalacion) AS ultimoID FROM instalaciones");
+            $id = $result[0]->ultimoID;
+
+            return $id;
+        }
+
+        public function setHorario($hora_inicio, $hora_fin, $id_instalacion) {
+            $result = $this->db->modificacion("INSERT INTO horario_instalaciones (hora_inicio, hora_fin, id_instalacion)
+                                                VALUES('$hora_inicio','$hora_fin','$id_instalacion')");
+            return $result;
         }
     }
