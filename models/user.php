@@ -89,9 +89,10 @@
         }
 
         public function delete($id_user) {
-            $this->db->modificacion("DELETE FROM users WHERE id_user='$id_user'");
+            $result = $this->db->modificacion("DELETE FROM users WHERE id_user='$id_user'");
+            $this->db->modificacion("DELETE FROM reservas WHERE id_user = '$id_user'");
 
-            return $this->db->filasAfectadas();
+            return $result;
         }
 
         public function existe($correo) {

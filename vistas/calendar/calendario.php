@@ -107,7 +107,7 @@
                 echo "<td>&nbsp;";
             } else {
                 // mostramos el dia
-                    echo "<td>$day";
+                echo "<td>";
                     if (is_array($data['lista_reservas'])) {
                         $reservasEscritas = array();
                         foreach($data['lista_reservas'] as $reserva) {
@@ -120,14 +120,13 @@
                                 $day = '0'.$day;
                             }
                             if ($day == substr($reserva->fecha, -2) && $mesSiguiente == substr($reserva->fecha, 5,2)) {
-                                echo 'p';
+                                echo '<div class="diaConReserva" onmouseover="mostrar_reservas_en_calendario_mes1('.$day.','.$mesSiguiente.')">';
                             }
                         }
                     }
-                
+                echo '<a href="index.php?action=mostrarReservasDetalladas&id_user='.$_SESSION['id_user'].'&dia='.$day.'&mes='.$mesSiguiente.'">'.$day.'</div></td>';
             }
             $day++;
-            echo '</td>';
             // cuando llega al final de la semana, iniciamos una columna nueva
             if ($i % 7 == 0) {
 

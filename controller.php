@@ -9,6 +9,7 @@
     class Controller {
         private $vista, $secure, $user, $instalacion, $reserva;
 
+        
         public function __construct() {
             $this->vista = new Vista();
             $this->secure = new Secure();
@@ -33,7 +34,6 @@
 
             if ($usuario) {
                 $this->secure->logIn($usuario);
-                /*PARA CAMBIAR MIENTRAS HAGO PRUEBAS*/
                 $this->mostrarCalendario();
             } else {
                 $data['msjError'] = 'Correo o contraseña incorrectos';
@@ -69,9 +69,12 @@
 
         public function mostrarListaUsuarios() {
             if ($this->secure->haySesionIniciada()) {
-                // HAY QUE PONER SI ES ADMINISTRADOR
-                $data['lista_users'] = $this->user->getAll();
-                $this->vista->mostrar("user/listaUsers",$data);
+                if ($this->secure->isAdmin()) {
+                    $data['lista_users'] = $this->user->getAll();
+                    $this->vista->mostrar("user/listaUsers",$data);
+                } else {
+                    $this->errorPermisos();
+                }
             } else {
                 $this->errorSesion();
             }
@@ -79,11 +82,15 @@
 
         public function formModificarUsuario() {
             if ($this->secure->haySesionIniciada()) {
-                // HAY QUE PONER SI ES ADMINISTRADOR
-                $user = $_REQUEST['id_user'];
-                if ($data['user'] = $this->user->get($user)) {
-                    $this->vista->mostrar("user/formularioModificarUsuario",$data);
+                if ($this->secure->isAdmin()) {
+                    $user = $_REQUEST['id_user'];
+                    if ($data['user'] = $this->user->get($user)) {
+                        $this->vista->mostrar("user/formularioModificarUsuario",$data);
+                    }
+                } else {
+                    $this->errorPermisos();
                 }
+                
             } else {
                 $this->errorSesion();
             }
@@ -91,17 +98,18 @@
 
         public function modificarUsuario() {
             if ($this->secure->haySesionIniciada()) {
-                // HAY QUE PONER SI ES ADMINISTRADOR
-                $imgResult = $this->user->procesarImagen();
+                if ($this->secure->isAdmin()) {
+                    $imgResult = $this->user->procesarImagen();
                     $result = $this->user->update();
                     if ($result == 1 && $imgResult) {
                         $data['msjInfo'] = 'Usuario modificado con éxito';
                     } else {
                         $data['msjError'] = 'No se ha podido modificar el usuario. Por favor, inténtelo de nuevo.';
                     }
-                $this->mostrarListaUsuarios();
-
-                
+                    $this->mostrarListaUsuarios();
+                } else {
+                    $this->errorPermisos();
+                }                
             } else {
                 $this->errorSesion();
             }
@@ -109,50 +117,59 @@
 
         public function insertarUsuario() {
             if ($this->secure->haySesionIniciada()) {
-                $result = $this->user->insert();
+                if ($this->secure->isAdmin()) {
+                    $result = $this->user->insert();
 
-                if ($result == 1) {
-                    $data['msjInfo'] = 'Usuario creado con exito';
-                } else {
-                    $data['msjError'] = 'No se ha podido crear el usuario. Inténtelo de nuevo más tarde';
-                }
-
-                $this->mostrarListaUsuarios();
-            }
-        }
-
-        /*A ESTA FUNCIÓN HAY QUE AÑADIRLE MÁS ADELANTE LO DE LAS RESERVAS*/
-        public function confirmacionBorrarUsuario() {
-            if ($this->secure->haySesionIniciada()) {
-                // HAY QUE PONER SI ES ADMINISTRADOR
-                $id_user = $_REQUEST['id_user'];
-                echo '<script>
-                    var opcion = confirm("¿Estás seguro de eliminar el usuario?");
-                    if (opcion) {
-                        location.href = "index.php?action=borrarUsuario&id_user='.$id_user.'";
+                    if ($result == 1) {
+                        $data['msjInfo'] = 'Usuario creado con exito';
                     } else {
-                        location.href = "index.php?action=mostrarListaUsuarios";
+                        $data['msjError'] = 'No se ha podido crear el usuario. Inténtelo de nuevo más tarde';
                     }
-                </script>';
+                    $this->mostrarListaUsuarios();
+                } else {
+                    $this->errorPermisos();
+                }
             } else {
                 $this->errorSesion();
             }
         }
 
-        /*A ESTA FUNCIÓN HAY QUE AÑADIRLE MÁS ADELANTE LO DE LAS RESERVAS*/
+        public function confirmacionBorrarUsuario() {
+            if ($this->secure->haySesionIniciada()) {
+                if ($this->secure->isAdmin()) {
+                    $id_user = $_REQUEST['id_user'];
+                    echo '<script>
+                        var opcion = confirm("¿Estás seguro de eliminar el usuario?");
+                        if (opcion) {
+                            location.href = "index.php?action=borrarUsuario&id_user='.$id_user.'";
+                        } else {
+                            location.href = "index.php?action=mostrarListaUsuarios";
+                        }
+                    </script>';
+                } else {
+                    $this->errorPermisos();
+                }
+            } else {
+                $this->errorSesion();
+            }
+        }
+
         public function borrarUsuario() {
             if ($this->secure->haySesionIniciada()) {
-                //HAY QUE PONER SI ES ADMINISTRADOR
-                $id_user = $_REQUEST['id_user'];
-                $result = $this->user->delete($id_user);
+                if ($this->secure->isAdmin()) {
+                    $id_user = $_REQUEST['id_user'];
+                    $result = $this->user->delete($id_user);
 
-                if ($result == 1) {
-                    $data['msjInfo'] = 'Usuario borrado con éxito';
+                    if ($result == 1) {
+                        $data['msjInfo'] = 'Usuario borrado con éxito';
+                    } else {
+                        $data['msjError'] = 'No se ha podido eliminar el usuario. Por favor inténtelo de nuevo más tarde';
+                    }
+
+                    $this->mostrarListaUsuarios();
                 } else {
-                    $data['msjError'] = 'No se ha podido eliminar el usuario. Por favor inténtelo de nuevo más tarde';
+                    $this->errorPermisos();
                 }
-
-                $this->mostrarListaUsuarios();
             } else {
                 $this->errorSesion();
             }
@@ -160,8 +177,11 @@
 
         public function formInsertarUsuario() {
             if ($this->secure->haySesionIniciada()) {
-                // HAY QUE PONER SI ES ADMINISTRADOR
-                $this->vista->mostrar("user/formularioInsertarUsuario");
+                if ($this->secure->isAdmin()) {
+                    $this->vista->mostrar("user/formularioInsertarUsuario");
+                } else {
+                    $this->errorPermisos();
+                }
             } else {
                 $this->errorSesion();
             }
@@ -169,9 +189,12 @@
 
         public function mostrarListaInstalaciones() {
             if ($this->secure->haySesionIniciada()) {
-                // HAY QUE PONER SI ES ADMINISTRADOR
-                $data['lista_instalaciones'] = $this->instalacion->getAll();
-                $this->vista->mostrar("instalacion/listaInstalaciones",$data);
+                if ($this->secure->isAdmin()) {
+                    $data['lista_instalaciones'] = $this->instalacion->getAll();
+                    $this->vista->mostrar("instalacion/listaInstalaciones",$data);
+                } else {
+                    $this->errorPermisos();
+                }
             } else {
                 $this->errorSesion();
             }
@@ -179,14 +202,17 @@
 
         public function confirmacionBorrarInstalacion() {
             if ($this->secure->haySesionIniciada()) {
-                // HAY QUE PONER SI ES ADMINISTRADOR
-                $id_instalacion = $_REQUEST['id_instalacion'];
-                echo '<script>
-                    var opcion = confirm("¿Estás seguro de eliminar la instalación? Pueden haber reservas.");
-                    if (opcion) {location.href="index.php?action=borrarInstalacion&id_instalacion='.$id_instalacion.'";
-                            location.href="index.php?action=mostrarListaInstalaciones"}
-                    else{location.href="index.php?action=mostrarListaInstalaciones"}
-                </script>';
+                if ($this->secure->isAdmin()) {
+                    $id_instalacion = $_REQUEST['id_instalacion'];
+                                    echo '<script>
+                                        var opcion = confirm("¿Estás seguro de eliminar la instalación? Pueden haber reservas.");
+                                        if (opcion) {location.href="index.php?action=borrarInstalacion&id_instalacion='.$id_instalacion.'";
+                                                location.href="index.php?action=mostrarListaInstalaciones"}
+                                        else{location.href="index.php?action=mostrarListaInstalaciones"}
+                                    </script>';
+                } else {
+                    $this->errorPermisos();
+                }
             } else {
                 $this->errorSesion();
             } 
@@ -194,18 +220,22 @@
 
         public function borrarInstalacion() {
             if ($this->secure->haySesionIniciada()) {
-                // HAY QUE PONER SI ES ADMINISTRADOR
-                $id_instalacion = $_REQUEST['id_instalacion'];
-                $result = $this->instalacion->delete($id_instalacion);
-
-                if ($result == 1) {
-                    $data['msjInfo'] = 'Instalación borrada con éxito';
+                if ($this->secure->isAdmin()) {
+                    $id_instalacion = $_REQUEST['id_instalacion'];
+                    $result = $this->instalacion->delete($id_instalacion);
+    
+                    if ($result == 1) {
+                        $data['msjInfo'] = 'Instalación borrada con éxito';
+                    } else {
+                        $data['msjError'] = 'No se ha podido eliminar la instalación. Por favor inténtelo de nuevo más tarde';
+                    }
+    
+                    $data['lista_instalaciones'] = $this->instalacion->getAll();
+                    $this->vista->mostrar("instalacion/listaInstalaciones",$data);
                 } else {
-                    $data['msjError'] = 'No se ha podido eliminar la instalación. Por favor inténtelo de nuevo más tarde';
+                    $this->errorPermisos();
                 }
-
-                $data['lista_instalaciones'] = $this->instalacion->getAll();
-                $this->vista->mostrar("instalacion/listaInstalaciones",$data);
+                
             } else {
                 $this->errorSesion();
             }
@@ -213,11 +243,14 @@
 
         public function formModificarInstalacion() {
             if ($this->secure->haySesionIniciada()) {
-                // HAY QUE PONER SI ES ADMINISTRADOR
-                $id_instalacion = $_REQUEST['id_instalacion'];
-                if ($data['instalacion'] = $this->instalacion->get($id_instalacion)) {
-                    $this->vista->mostrar("instalacion/formularioModificarInstalacion",$data);
-                }
+                if ($this->secure->isAdmin()) {
+                    $id_instalacion = $_REQUEST['id_instalacion'];
+                    if ($data['instalacion'] = $this->instalacion->get($id_instalacion)) {
+                        $this->vista->mostrar("instalacion/formularioModificarInstalacion",$data);
+                    }
+                } else {
+                    $this->errorPermisos();
+                } 
             } else {
                 $this->errorSesion();
             }
@@ -225,7 +258,7 @@
 
         public function modificarInstalacion() {
             if ($this->secure->haySesionIniciada()) {
-                // HAY QUE PONER SI ES ADMINISTRADOR
+                if ($this->secure->isAdmin()) {
                     $imgResult = $this->instalacion->procesarImagen();
                     if ($imgResult) {
                         $result = $this->instalacion->update();
@@ -234,12 +267,12 @@
                         } else {
                             $data['msjError'] = 'No se ha podido modificar la instalación. Inténtelo de nuevo';
                         }
-                    } else {
-                        // HACERLO EN AJAX SI HAY TIEMPO
                     }
+                    $this->mostrarListaInstalaciones();
+                } else {
+                    $this->errorPermisos();
+                }
                     
-                    
-                $this->mostrarListaInstalaciones();
             } else {
                 $this->errorSesion();
             }
@@ -247,8 +280,12 @@
 
         public function formInsertarInstalacion() {
             if ($this->secure->haySesionIniciada()) {
-                // HAY QUE PONER SI ES ADMINISTRADOR
-                $this->vista->mostrar("instalacion/formularioInsertarInstalacion");
+                if ($this->secure->isAdmin()) {
+                    $this->vista->mostrar("instalacion/formularioInsertarInstalacion");
+                } else {
+                    $this->errorPermisos();
+                }
+                
             } else {
                 $this->errorSesion();
             }
@@ -256,19 +293,22 @@
 
         public function insertarInstalacion() {
             if ($this->secure->haySesionIniciada()) {
-                // HAY QUE PONER SI ES ADMINISTRADOR
-                $result = $this->instalacion->insert();
-                $id_instalacion = $this->instalacion->getLastID();
-                $this->instalacion->setHorario(10,22,$id_instalacion);
-
-                if ($result == 1) {
-                    $data['msjInfo'] = 'Instalación creada con éxito';
+                if ($this->secure->isAdmin()) {
+                    $result = $this->instalacion->insert();
+                    $id_instalacion = $this->instalacion->getLastID();
+                    $this->instalacion->setHorario(10,22,$id_instalacion);
+    
+                    if ($result == 1) {
+                        $data['msjInfo'] = 'Instalación creada con éxito';
+                    } else {
+                        $data['msjError'] = 'No se ha podido crear la instalación';
+                    }
+    
+                    $data['lista_instalaciones'] = $this->instalacion->getAll();
+                    $this->vista->mostrar("instalacion/listaInstalaciones",$data);
                 } else {
-                    $data['msjError'] = 'No se ha podido crear la instalación';
+                    $this->errorPermisos();
                 }
-
-                $data['lista_instalaciones'] = $this->instalacion->getAll();
-                $this->vista->mostrar("instalacion/listaInstalaciones",$data);
             } else {
                 $this->errorSesion();
             }
