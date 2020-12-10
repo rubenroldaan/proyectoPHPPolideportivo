@@ -50,7 +50,7 @@
             $passwd = $_REQUEST['passwd'];
             $mail = $_REQUEST['mail'];
             $rol = $_REQUEST['rol'];
-            $imagen = $_FILES['imagen']['name'];
+            $this->db->modificacion("UPDATE users SET nombre='temporal'");
 
             $result = $this->db->modificacion("UPDATE users SET
                                                                 nombre='$nombre',
@@ -62,7 +62,7 @@
                                                                 rol='$rol',
                                                                 imagen='$dni.png'
                                                 WHERE id_user='$id_user'");
-            return $this->db->filasAfectadas();
+            return $result;
         }
 
         public function procesarImagen() {
@@ -77,11 +77,13 @@
                 if (!((strpos($tipo, "gif") || strpos($tipo,"jpeg") || (strpos($tipo,"jpg") || strpos($tipo,"png")) && ($tamanyo < 2000000)))) {
                     $imagenBuena = false;
                 } else {
-                    if (move_uploaded_file($temp, 'imgs/prof_pics/'.$dni.'.png')) {
+                    if ($culo = move_uploaded_file($temp, 'imgs/prof_pics/'.$dni.'.png')) {
                         $this->db->modificacion("UPDATE users SET
                                                                 imagen='$imagen'
                                                     WHERE id_user = '$id_user'");
                         chmod('imgs/prof_pics/'.$dni.'.png', 0777);
+                    } else {
+                        $imagenBuena = false;
                     }
                 }
             }

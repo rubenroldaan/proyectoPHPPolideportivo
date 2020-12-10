@@ -106,7 +106,8 @@
                     } else {
                         $data['msjError'] = 'No se ha podido modificar el usuario. Por favor, inténtelo de nuevo.';
                     }
-                    $this->mostrarListaUsuarios();
+                    $data['lista_users'] = $this->user->getAll();
+                    $this->vista->mostrar("user/listaUsers",$data);
                 } else {
                     $this->errorPermisos();
                 }                

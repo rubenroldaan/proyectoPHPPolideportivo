@@ -1,9 +1,9 @@
 <?php
     if (isset($data['msjInfo'])) {
-        echo '<p>$data'.$data["msjInfo"].'"</p>';
+        echo '<p>'.$data["msjInfo"].'</p>';
     }
     if (isset($data['msjError'])) {
-        echo '<p>$data'.$data["msjError"].'"</p>';
+        echo '<p>'.$data["msjError"].'</p>';
     }
     echo '<div id="contenedor">';
     echo '<h2 align="center" style="color:white;">Gestión de usuarios</h2>';
