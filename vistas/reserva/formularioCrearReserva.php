@@ -16,7 +16,7 @@
                     echo '<select name="horas[]" class="selectReservas" size="13" multiple>';
                 for ($i=$horario->hora_inicio; $i <= $horario->hora_fin; $i++) {
                         if (in_array($i,$data['horas_tomadas'])) {
-                        echo '<option value="'.$i.'" class="celdaHoraBloqueada" id="'.$i.'" onclick="validarSeleccionarHora('.$i.')" disabled>'.$i.':00</td>';
+                        echo '<option value="'.$i.'" class="celdaHoraBloqueada" id="'.$i.'" onclick="prohibirSeleccionarHora()" disabled>'.$i.':00</td>';
                     } else {
                         echo '<option value="'.$i.'" id="'.$i.'" class="noSeleccionada" onclick="validarSeleccionarHora('.$i.')">'.$i.':00</td>';
                     }
